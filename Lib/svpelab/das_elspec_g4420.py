@@ -31,8 +31,8 @@ Questions can be directed to support@sunspec.org
 """
 
 import os
-from . import device_elspec_g4420
-from . import das
+import device_elspec_g4420
+import das
 
 elspec_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],

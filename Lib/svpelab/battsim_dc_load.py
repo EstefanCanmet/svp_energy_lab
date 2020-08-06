@@ -31,9 +31,9 @@ Questions can be directed to support@sunspec.org
 """
 
 import os
-from . import dcsim
-from . import loadsim
-from . import battsim
+import dcsim
+import loadsim
+import battsim
 
 # This drive creates a battery simulator from a dc electronic load and dc power supply
 

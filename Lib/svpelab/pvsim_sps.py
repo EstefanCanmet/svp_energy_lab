@@ -31,8 +31,8 @@ Questions can be directed to support@sunspec.org
 """
 
 import os
-from . import device_pvsim_sps as sps
-from . import pvsim
+import device_pvsim_sps as sps
+import pvsim
 
 sps_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],

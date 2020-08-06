@@ -58,7 +58,7 @@ class DatasetError(Exception):
     A dataset consists of a set of time series points organized as parallel arrays and some
     additional optional properties.
 
-    Optional properties:
+    Optional roperties:
     Start time of dataset
     Sample rate of dataset (samples/sec)
     Trigger sample (record index into dataset)
@@ -88,21 +88,18 @@ class Dataset(object):
 
     def append(self, data):
         dlen = len(data)
-        # self.ts.log_debug('self.data=%s, data=%s' % (self.data, data))
         if len(data) != len(self.data):
             raise DatasetError('Append record point mismatch, dataset contains %s points,'
                                ' appended data contains %s points' % (len(self.data), dlen))
         for i in range(dlen):
             try:
                 if data[i] is not None:
+                    print(type(data[i]))
                     if data[i] is tuple:
                         self.ts.log_debug('tuple data point recorded: %s' % data)
                         v = float(data[i][0])
                     elif isinstance(data[i], datetime.datetime):
-                        epoch = datetime.datetime.utcfromtimestamp(0)
-                        total_seconds = (data[i] - epoch).total_seconds()
-                        # total_seconds will be in decimals (millisecond precision)
-                        v = total_seconds
+                        v = data[i]
                     else:
                         v = float(data[i])
                 else:
@@ -125,11 +122,11 @@ class Dataset(object):
             self.data.append([])
 
     def to_csv(self, filename):
-        cols = list(range(len(self.data)))
+        cols = range(len(self.data))
         if len(cols) > 0:
             f = open(filename, 'w')
             f.write('%s\n' % ', '.join(map(str, self.points)))
-            for i in range(len(self.data[0])):
+            for i in xrange(len(self.data[0])):
                 d = []
                 for j in cols:
                     # self.ts.log_debug('data = %s' % self.data)
@@ -156,14 +153,6 @@ class Dataset(object):
             if len(data) > 0:
                 self.append(data)
         f.close()
-    def remove_none_row(self,filename, index):
-        import pandas as pd
-        import numpy as np
-        df = pd.read_csv(filename)
-        df[index].replace('None', np.nan, inplace=True)
-        df.dropna(subset=[index],inplace=True)
-        df.reset_index(inplace=True,drop=True)
-        df.to_csv(filename,index=False)
 
 
 if __name__ == "__main__":

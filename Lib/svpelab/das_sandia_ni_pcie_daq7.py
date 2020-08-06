@@ -33,8 +33,8 @@ Questions can be directed to support@sunspec.org
 """
 
 import os
-from . import device_das7_sandia_ni_pcie
-from . import das
+import device_das7_sandia_ni_pcie
+import das
 
 daq7_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],
@@ -70,7 +70,7 @@ class DAS(das.DAS):
 
         self.device = device_das7_sandia_ni_pcie.Device(self.params, ts)
         self.data_points = []
-        for key, value in self.device.points_map.items():
+        for key, value in self.device.points_map.iteritems():
             self.data_points.append(key)
         self.data_points = sorted(self.data_points)  # alphabetize
 

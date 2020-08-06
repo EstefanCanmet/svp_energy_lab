@@ -32,7 +32,7 @@ Questions can be directed to support@sunspec.org
 
 import os
 
-from . import pvsim
+import pvsim
 
 manual_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],

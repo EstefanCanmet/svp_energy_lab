@@ -32,7 +32,7 @@ Questions can be directed to support@sunspec.org
 
 import os
 
-from . import pvsim
+import pvsim
 
 sim_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],
@@ -57,16 +57,16 @@ class PVSim(pvsim.PVSim):
         pvsim.PVSim.__init__(self, ts, group_name)
 
     def irradiance_set(self, irradiance=1000):
-        self.ts.log('Simulation mode in use, no PV irradiance has been set')
+        self.ts.log('Setting PV irradiance to %0.1f W/m^2.' % irradiance)
 
     def power_set(self, power):
-        self.ts.log('Simulation mode in use, no PV power has been set')
+        self.ts.log('Setting PV power to %0.1f W.' % power)
 
     def power_on(self):
-        self.ts.log('No PV Powering on since in Simulation mode')
+        self.ts.log('Powering on PV simulator to give EUT DC power.')
 
     def profile_start(self):
-        self.ts.log('No Starting PV simulator profile since in Simulation mode')
+        self.ts.log('Starting PV simulator profile.')
 
 if __name__ == "__main__":
     pass

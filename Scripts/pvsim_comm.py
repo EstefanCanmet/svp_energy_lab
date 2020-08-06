@@ -51,7 +51,7 @@ def test_run():
 
         result = script.RESULT_PASS
 
-    except script.ScriptFail as e:
+    except script.ScriptFail, e:
         reason = str(e)
         if reason:
             ts.log_error(reason)
@@ -80,7 +80,7 @@ def run(test_script):
         if result == script.RESULT_FAIL:
             rc = 1
 
-    except Exception as e:
+    except Exception, e:
         ts.log_error('Test script exception: %s' % traceback.format_exc())
         rc = 1
 

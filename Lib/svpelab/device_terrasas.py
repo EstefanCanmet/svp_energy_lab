@@ -63,9 +63,8 @@ class TerraSAS(object):
                 self.conn.connect((self.ipaddr, self.ipport))
 
             # print 'cmd> %s' % (cmd_str)
-            cmd_str = cmd_str.encode('utf-8')
             self.conn.send(cmd_str)
-        except Exception as e:
+        except Exception, e:
             raise
 
     def _query(self, cmd_str):
@@ -76,14 +75,14 @@ class TerraSAS(object):
 
         while more_data:
             try:
-                data = self.conn.recv(self.buffer_size).decode('utf-8')
+                data = self.conn.recv(self.buffer_size)
                 if len(data) > 0:
                     for d in data:
                         resp += d
                         if d == '\r':
                             more_data = False
                             break
-            except Exception as e:
+            except Exception, e:
                 raise TerraSASError('Timeout waiting for response')
 
         return resp
@@ -96,7 +95,7 @@ class TerraSAS(object):
             if len(resp) > 0:
                 if resp[0] != '0':
                     raise TerraSASError(resp)
-        except Exception as e:
+        except Exception, e:
             raise TerraSASError(str(e))
         finally:
             self.close()
@@ -104,7 +103,7 @@ class TerraSAS(object):
     def query(self, cmd_str):
         try:
             resp = self._query(cmd_str).strip()
-        except Exception as e:
+        except Exception, e:
             raise TerraSASError(str(e))
         finally:
             self.close()
@@ -132,7 +131,7 @@ class TerraSAS(object):
         try:
             if self.conn is not None:
                 self.conn.close()
-        except Exception as e:
+        except Exception, e:
             pass
         finally:
             self.conn = None
@@ -148,14 +147,14 @@ class TerraSAS(object):
         if filename is not None:
             try:
                 self.cmd('CURVe:DELEte "%s"\r' % filename)  # Must delete the curve from GUI
-            except Exception as e:
-                print(('Curve not found: %s' % e))
+            except Exception, e:
+                print('Curve not found: %s' % e)
             self.cmd('CURVe:READFile "%s"\r' % (filename))  # Read it from disk
         else:
             try:
                 self.cmd('CURVe:DELEte "%s"\r' % SVP_CURVE)  # Must delete the previous curve
-            except Exception as e:
-                print(('Curve not found: %s' % e))
+            except Exception, e:
+                print('Curve not found: %s' % e)
 
             if voc is not None and isc is not None:
                 self.cmd('CURVe:VIparms %s, %s\r' % (voc, isc))
@@ -294,17 +293,6 @@ class Channel(object):
         self.tsas.cmd('SOURce:VOLTage:PROTection %s, (@%s)\r' % (voltage, self.index))
         #[SOURce:]CURRent:PROTection[:LEVel] <value> [,(@chanlist)]
 
-    def measurements_get(self):
-        """
-        Measure the voltage, current, and power of the channel
-        :return: dictionary with power data with keys: 'DC_V', 'DC_I', and 'DC_P'
-        """
-        meas = {'DC_V': float(self.tsas.query('MEASure:SCALar:VOLTage:DC? (@%s)\r' % self.index)),
-                'DC_I': float(self.tsas.query('MEASure:SCALar:CURRent:DC? (@%s)\r' % self.index)),
-                # 'MPPT_Accuracy': float(self.tsas.query('MEASure:SCALar:MPPaccuracy:DC? (@%s)\r' % self.index)),
-                'DC_P': float(self.tsas.query('MEASure:SCALar:POWer:DC? (@%s)\r' % self.index))}
-        return meas
-
 if __name__ == "__main__":
 
     try:
@@ -322,36 +310,36 @@ if __name__ == "__main__":
         tsas.profile('STPsIrradiance')
         tsas.profile('Cloudy day')
 
-        print('groups =', tsas.groups_get())
-        print('profiles =', tsas.profiles_get())
-        print('curves =', tsas.curves_get())
+        print 'groups =', tsas.groups_get()
+        print 'profiles =', tsas.profiles_get()
+        print 'curves =', tsas.curves_get()
 
         channel = tsas.channels[1]
-        print('is on =', channel.output_is_on())
+        print 'is on =', channel.output_is_on()
 
         channel.profile_set('STPsIrradiance')
         channel.curve_set(EN_50530_CURVE)
         channel.profile_start()
         channel.output_set_on()
 
-        print('channel curve =', channel.curve_get())
-        print('channel profile =', channel.profile_get())
-        print('is on =', channel.output_is_on())
+        print 'channel curve =', channel.curve_get()
+        print 'channel profile =', channel.profile_get()
+        print 'is on =', channel.output_is_on()
 
         time.sleep(10)
-        print('is on =', channel.output_is_on())
+        print 'is on =', channel.output_is_on()
         channel.profile_abort()
         channel.profile_set('Cloudy day')
         channel.curve_set('BP Solar - BP 3230T (60 cells)')
 
         channel.profile_start()
 
-        print('channel curve =', channel.curve_get())
-        print('channel profile =', channel.profile_get())
-        print('is on =', channel.output_is_on())
+        print 'channel curve =', channel.curve_get()
+        print 'channel profile =', channel.profile_get()
+        print 'is on =', channel.output_is_on()
 
         tsas.close()
 
-    except Exception as e:
+    except Exception, e:
         raise
-        print('Error running TerraSAS setup: %s' % (str(e)))
+        print 'Error running TerraSAS setup: %s' % (str(e))
