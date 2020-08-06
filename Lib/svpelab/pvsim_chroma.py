@@ -31,7 +31,7 @@ Questions can be directed to support@sunspec.org
 """
 
 import os
-from . import pvsim
+import pvsim
 
 chroma_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],
@@ -91,7 +91,7 @@ class PVSim(pvsim.PVSim):
 
 
         try:
-            from . import chromapv
+            import chromapv
 
             #self.ipaddr = ts._param_value('ipaddr')
             self.pmp = ts._param_value('pmp')

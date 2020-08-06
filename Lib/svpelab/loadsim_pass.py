@@ -31,7 +31,7 @@ Questions can be directed to support@sunspec.org
 """
 
 import os
-from . import loadsim
+import loadsim
 
 pass_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],

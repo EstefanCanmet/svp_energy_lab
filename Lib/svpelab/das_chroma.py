@@ -32,8 +32,8 @@ Questions can be directed to support@sunspec.org
 
 import os
 
-from . import das
-from . import device_chroma_dpm
+import das
+import device_chroma_dpm
 
 chroma_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],

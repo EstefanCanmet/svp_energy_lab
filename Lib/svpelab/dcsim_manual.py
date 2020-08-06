@@ -32,7 +32,7 @@ Questions can be directed to support@sunspec.org
 
 import os
 import time
-from . import dcsim
+import dcsim
 
 chroma_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],

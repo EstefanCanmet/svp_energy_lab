@@ -31,17 +31,17 @@ Questions can be directed to support@sunspec.org
 """
 
 import os
-from . import pv_curve_generation
+import pv_curve_generation
 import time
-from . import pv_profiles
-from . import pvsim
+import pv_profiles
+import pvsim
 
 try:
     import typhoon.api.hil as cp  # control panel
     from typhoon.api.schematic_editor import model
     import typhoon.api.pv_generator as pv
-except Exception as e:
-    print(('Typhoon HIL API not installed. %s' % e))
+except Exception, e:
+    print('Typhoon HIL API not installed. %s' % e)
 
 typhoon_info = {
     'name': os.path.splitext(os.path.basename(__file__))[0],

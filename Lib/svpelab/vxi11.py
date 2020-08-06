@@ -26,7 +26,7 @@ THE SOFTWARE.
 import random
 import re
 
-from . import vxi11_rpc as rpc
+import vxi11_rpc as rpc
 
 # VXI-11 RPC constants
 
